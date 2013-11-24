@@ -1,0 +1,23 @@
+body {
+	margin: 7% 5% 0 5%;
+}
+
+div {
+	font-color: #DDDDDD;
+}
+
+#container {
+	display: block;
+	clear: both;
+	font-size: 3em;
+	margin: auto;
+}
+
+form {
+	text-align: center;
+}
+
+input {
+	width: 400px;
+	font-size: 1em;
+}

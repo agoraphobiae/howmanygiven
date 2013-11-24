@@ -4,6 +4,8 @@
   <title>{% if title %}{{title}}{% else %}Research &amp; Development at Berkeley{% endif %}</title>
 
   <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+  <link href="{{ url_for('static', filename='common.css') }}" rel='stylesheet' type='text/css'>
 </head>
 <body>
 {% block content %}
