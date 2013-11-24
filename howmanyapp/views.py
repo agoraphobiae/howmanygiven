@@ -17,7 +17,8 @@ def count(path):
     if urlparse(path).scheme == '':
         path = "http://" + path
     return render_template("query.html", 
-        count=countInPage(path, 'fuck'))
+        count=countInPage(path, 'fuck'),
+        queryurl=path)
 
 @app.errorhandler(404)
 def page_not_found(e):

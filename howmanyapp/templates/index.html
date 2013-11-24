@@ -7,14 +7,25 @@ function submitForm() {
       return false;
     }
 </script>
+
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'></script>
+<script type='text/javascript' src="{{ url_for('static', filename='dynamicpage.js') }}"></script>
+<script type='text/javascript' src="{{ url_for('static', filename='modernizr.js') }}"></script>
 {% endblock %}
+
+
 {% block content %}
 <div id="container">
-  <form method="get" name="urlform" action="/query" onsubmit="return submitForm()">
+  <form method="get" name="urlform" id="urlform">
     How many fucks does 
     <input type="text" name="urlinput" id="urlinput">
      give?
     <input type="submit" style="display: none;">
   </form>
+
+  <section id="main-content">
+    <div id="guts">
+    </div>
+  </section>
 </div>
 {% endblock %}

@@ -1,8 +1,10 @@
 body {
 	margin: 7% 5% 0 5%;
+	font-family: Arial, sans-serif;
 }
 
 div {
+	text-align: center;
 	font-color: #DDDDDD;
 }
 
@@ -14,7 +16,7 @@ div {
 }
 
 form {
-	text-align: center;
+	margin-bottom: 2em;
 }
 
 input {
