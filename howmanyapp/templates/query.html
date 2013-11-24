@@ -3,8 +3,12 @@
 <div id="container">
   <section id="main-content">
     <div id="guts">
-    {{ queryurl }} gives exactly 
+    {{ queryurl }} gives
+    {% if count %} exactly 
     <br><b><h1>{{ count }}</h1></b> fucks.
+    {% else %}
+    <br><b><h1>no</h1></b> fucks.
+    {% endif %}
     </div>
   </section>
 </div> 
