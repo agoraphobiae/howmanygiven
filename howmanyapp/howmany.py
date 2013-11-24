@@ -1,6 +1,7 @@
 # downloader
 
 import mechanize
+import re
 
 def getPage(url):
 	br = mechanize.Browser()
@@ -11,3 +12,11 @@ def getPage(url):
 	html = r.read()
 
 	return html
+
+
+def numword(document):
+	counter = 0
+	matches = re.findall(r'fuck[\w]*', document)
+	for i in matches:
+		counter++
+	return counter
