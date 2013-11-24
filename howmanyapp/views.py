@@ -2,13 +2,22 @@
 
 from howmanyapp import app
 from flask import render_template, flash, redirect, request
+from howmany import *
 
 from random import choice
+from urlparse import urlparse
 
 @app.route('/')
 @app.route('/index.html')
 def index():
     return render_template("index.html")
+
+@app.route('/<path:path>')
+def count(path):
+    if urlparse(path).scheme == '':
+        path = "http://" + path
+    return render_template("query.html", 
+        count=countInPage(path, 'fuck'))
 
 @app.errorhandler(404)
 def page_not_found(e):

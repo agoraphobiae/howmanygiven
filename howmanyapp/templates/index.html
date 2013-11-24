@@ -1,10 +1,20 @@
 {% extends "base.html" %}
+{% block head %}
+<script>
+function submitForm() {
+      url = document.getElementById('urlinput').value;
+      window.location = '/' + url;
+      return false;
+    }
+</script>
+{% endblock %}
 {% block content %}
 <div id="container">
-  <form method="get" name="urlform" action="/query">
+  <form method="get" name="urlform" action="/query" onsubmit="return submitForm()">
     How many fucks does 
-    <input type="text" name="url">
+    <input type="text" name="urlinput" id="urlinput">
      give?
+    <input type="submit" style="display: none;">
   </form>
 </div>
 {% endblock %}
