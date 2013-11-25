@@ -19,6 +19,8 @@ $(function() {
     });
 
     function loadContent(href){
+        if (!href) { return; } // went to /, no query
+        alert(href);
         $mainContent
                 .find("#guts")
                 .fadeOut(200, function() {

@@ -14,6 +14,7 @@ def index():
 
 @app.route('/<path:path>')
 def count(path):
+    print "PATH", path
     if urlparse(path).scheme == '':
         path = "http://" + path
     return render_template("query.html", 
