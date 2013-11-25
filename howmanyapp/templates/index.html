@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block head %}
 <script>
+function clearInput(inputbox) {
+      if (inputbox.cleared) { return; }
+      inputbox.value = '';
+      inputbox.cleared = true;
+      inputbox.style.color = '#333';
+}
 function submitForm() {
       url = document.getElementById('urlinput').value;
       window.location = '/' + url;
@@ -18,7 +24,7 @@ function submitForm() {
 <div id="container">
   <form method="get" name="urlform" id="urlform">
     How many fucks does 
-    <input type="text" name="urlinput" id="urlinput">
+    <input type="text" name="urlinput" id="urlinput" value="reddit.com" onclick="clearInput(this)">
      give?
     <input type="submit" style="display: none;">
   </form>

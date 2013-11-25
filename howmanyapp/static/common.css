@@ -22,4 +22,6 @@ form {
 input {
 	width: 400px;
 	font-size: 1em;
+	color: #DDD;
+	border: 1px solid #DDD;
 }
