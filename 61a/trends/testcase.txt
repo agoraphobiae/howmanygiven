@@ -1,0 +1,18 @@
+#tweets = load_tweets(make_tweet, 'party')
+from datetime import datettime
+tweets = [make_tweet("i #love my job", datetime(2012,3,24,0), 38.5817, 121.4933)]
+tweets.append(make_tweet("i hate my job"
+tweets_by_hour = group_tweets_by_hour(tweets)
+for hour in [0, 5, 9, 17, 23]:
+     current_tweets = tweets_by_hour.get(hour, [])
+     tweets_by_state = group_tweets_by_state(current_tweets)
+     for m in tweets_by_state.items():
+          try:
+               print(m[1])
+          except:
+               pass
+     state_sentiments = average_sentiments(tweets_by_state)
+     print('HOUR:', hour)
+     for state in ['CA', 'FL', 'DC', 'MO', 'NY']:
+         if state in state_sentiments.keys():
+             print(state, ":", state_sentiments[state])
