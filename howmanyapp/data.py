@@ -38,11 +38,18 @@ def analyze_doc(document):
 	Phrases count as 1 "value" word, and we rollback counting of values/increments 
 	if we find a phrase
 
-	Fix:
-	>abandon
-	>abandon a
-	>abandon a priori
-	>a priori
+	Phrase algorithm:
+	So. We keep a list of the most recent n words, where n is the length
+	of the longest phrase we're looking for (should be 7). We go down this
+	list looking for phrases as follows:
+
+	1,2,3,4 -> not a phrase
+	2,3,4 -> not a phrase
+	3,4 -> phrase match, rollback 3
+
+	On a phrase match, we rollback the counter and the sentiment values
+	of the words in the phrase, so we don't double count. Phrases count
+	for one counter increment.
 
 	>>> analyze_doc("101")
 	-0.25
@@ -76,24 +83,24 @@ def analyze_doc(document):
 		lastnphrase += ' ' + word
 		lastnphrase = lastnphrase.strip()
 
-		#print "PHRASE", lastnphrase, "WORD", word
+		# print "PHRASE", lastnphrase, "WORD", word
 		lastnwordschecker = lastnwords[:] # we are going to mutate this list, so lets make a copy
 
 		# phrase loop
 		while lastnphrase != word:
 			phrasevalue = word_sentiments.get(lastnphrase, 0)
-			#print lastnphrase
+			# print lastnphrase
 			if phrasevalue and len(lastnphrase.split()) > 1:
 				# print "LOL", lastnphrase
 				for phraseword,v in lastnwordschecker:
 					# rollback our values
-					#print phraseword, v
+					# print phraseword, v
 					total -= v
 					if v:
-						#print "asdf"
+						# print "asdf"
 						count -= 1
 				total += phrasevalue
-				#print "PHRASEVAL", phrasevalue
+				# print "PHRASEVAL", phrasevalue
 				count += 1
 				# print total
 				lastnwordschecker = []
@@ -109,7 +116,7 @@ def analyze_doc(document):
 		lastnwords.append( (word, value) )
 		if len(lastnwords) > maxphrase:
 			lastnwords.pop(0)
-		#print "TOTAL", total, "COUNT", count
+		# print "TOTAL", total, "COUNT", count
 
 	average = 0
 	if count:
