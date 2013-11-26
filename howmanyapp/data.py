@@ -38,6 +38,12 @@ def analyze_doc(document):
 	Phrases count as 1 "value" word, and we rollback counting of values/increments 
 	if we find a phrase
 
+	Fix:
+	>abandon
+	>abandon a
+	>abandon a priori
+	>a priori
+
 	>>> analyze_doc("101")
 	-0.25
 	>>> analyze_doc("abandon")
@@ -51,7 +57,7 @@ def analyze_doc(document):
 	>>> analyze_doc("william carlos williams a priori")
 	0.3125
 	>>> analyze_doc("william carlos williams abandon a priori")
-	0.0833333333
+	0.08333333333333333
 	>>> analyze_doc("")
 	0
 	"""
@@ -70,27 +76,40 @@ def analyze_doc(document):
 		lastnphrase += ' ' + word
 		lastnphrase = lastnphrase.strip()
 
-		phrasevalue = word_sentiments.get(lastnphrase, 0)
-		print lastnphrase
-		if phrasevalue and len(lastnphrase.split()) > 1:
-			# print "LOL", lastnphrase
-			for phraseword,v in lastnwords:
-				# rollback our values
-				total -= v
-				if v:
-					count -= 1
-			total += phrasevalue
-			count += 1
-			# print total
-			lastnwords = []
-		else:
-			# didnt find phrase, no need to reset,
-			# keep lookin!
-			lastnwords.append( (word, value) )
-			if len(lastnwords) > maxphrase:
-				lastnwords.pop(0)
+		#print "PHRASE", lastnphrase, "WORD", word
+		lastnwordschecker = lastnwords[:] # we are going to mutate this list, so lets make a copy
 
-		print value, count
+		# phrase loop
+		while lastnphrase != word:
+			phrasevalue = word_sentiments.get(lastnphrase, 0)
+			#print lastnphrase
+			if phrasevalue and len(lastnphrase.split()) > 1:
+				# print "LOL", lastnphrase
+				for phraseword,v in lastnwordschecker:
+					# rollback our values
+					#print phraseword, v
+					total -= v
+					if v:
+						#print "asdf"
+						count -= 1
+				total += phrasevalue
+				#print "PHRASEVAL", phrasevalue
+				count += 1
+				# print total
+				lastnwordschecker = []
+				break
+
+			# take off first word and check the rest
+			lastnphrase = lastnphrase[lastnphrase.find(' ')+1:]
+			lastnwordschecker.pop(0)
+
+
+		# didnt find phrase, no need to reset,
+		# keep lookin!
+		lastnwords.append( (word, value) )
+		if len(lastnwords) > maxphrase:
+			lastnwords.pop(0)
+		#print "TOTAL", total, "COUNT", count
 
 	average = 0
 	if count:
