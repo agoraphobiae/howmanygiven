@@ -12,14 +12,23 @@ from urlparse import urlparse
 def index():
     return render_template("index.html")
 
-@app.route('/<path:path>')
-def count(path):
+@app.route('/fuck/<path>')
+def countf(path):
     print "PATH", path
     if urlparse(path).scheme == '':
         path = "http://" + path
-    return render_template("query.html", 
+    return render_template("fquery.html", 
         count=countInPage(path, 'fuck'),
         queryurl=path)
+
+@app.route('/<path:path>')
+def analyze(path):
+    print "PATH", path
+    if urlparse(path).scheme == '':
+        path = "http://" + path
+    return render_template("query.html",
+        queryname=cleanQueryName(path),
+        data=analyzePage(path))
 
 @app.errorhandler(404)
 def page_not_found(e):

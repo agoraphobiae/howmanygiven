@@ -3,12 +3,22 @@
 <div id="container">
   <section id="main-content">
     <div id="guts">
-    {{ queryurl }} gives
-    {% if count %} exactly 
-    <br><b><h1>{{ count }}</h1></b> fucks.
-    {% else %}
-    <br><b><h1>no</h1></b> fucks.
-    {% endif %}
+    {{ queryname }} analysis: <br>
+    <table class="center">
+    {% for k,v in data.wordrank.items() %}
+      <tr>
+        <td>{{ k }} </td><td>{{ v }}</td>
+      </tr>
+    {% endfor %}
+    </table><br>
+    The longest word was: {{ data.longestword[0] }} at {{ data.longestword[1] }} characters long.<br>
+    <table class="center">
+    {% for k,v in data.wordcount.items() %}
+      <tr>
+        <td>{{ k }}</td><td>{{ v }}</td>
+      </tr>
+    {% endfor %}
+    </table>
     </div>
   </section>
 </div> 
