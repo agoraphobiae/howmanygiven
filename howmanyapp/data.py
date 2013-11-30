@@ -185,7 +185,7 @@ class SentimentDoc(HowManyDoc):
 			# didnt find phrase, no need to reset,
 			# keep lookin!
 			lastnwords.append( (word, value) )
-			if len(lastnwords) > self.maxphrase:
+			if len(lastnwords) > self.maxphrase[1]:
 				lastnwords.pop(0)
 			# print "TOTAL", total, "COUNT", count
 
