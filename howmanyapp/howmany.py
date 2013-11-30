@@ -6,9 +6,12 @@ import re
 
 from collections import OrderedDict
 
-class HowManyDoc:
-	def __init__(self, plaintext):
-		self.document = plaintext
+class HowManyDoc(object):
+	"""Base class for document analysis, which implements counting
+	of words and related functionality"""
+
+	def __init__(self, document):
+		self.document = document
 		self.wordrank = OrderedDict()
 		self.wordcount = {}
 		self.longestword = ('null', 0)
@@ -79,12 +82,11 @@ def analyze_page(url):
 
 	r = br.open(url)
 	pagetext = innertext_from_html(r.read())
-	d = HowManyDoc(pagetext)
-	s = SentimentDoc(pagetext)
+	d = SentimentDoc(pagetext)
 
 	d.rank_words()
 	d.numword('fuck')
-	s.analyze()
+	d.analyze()
 
 	return d
 

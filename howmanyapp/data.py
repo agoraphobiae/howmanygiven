@@ -3,17 +3,23 @@ import string
 import sys
 from string import ascii_letters, digits
 
-class SentimentDoc:
+from howmany import HowManyDoc
+
+class SentimentDoc(HowManyDoc):
 	sentiment_dict = "data/sentiments.csv"
 
 	def __init__(self, document):
 		"""Setup the SentimentDoc, by loading the default sentiment_dict
 		and extract_words-ing from the given document param"""
-		self.document = document
+		# initialize
 		self.maxphrase = ('null', 0)
 		self.word_sentiments = {}
 		self.sentiment_value = 'null'
 
+		# need self.document
+		HowManyDoc.__init__(self, document)
+
+		# setup calls
 		self.extract_words()
 		self.load_sentiments() # will update word_sentiments
 
@@ -129,3 +135,4 @@ class SentimentDoc:
 		if count:
 			self.sentiment_value = total/count
 			# print average
+		return self.sentiment_value
