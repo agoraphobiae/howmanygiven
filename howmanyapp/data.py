@@ -7,16 +7,20 @@ class SentimentDoc:
 	sentiment_dict = "data/sentiments.csv"
 
 	def __init__(self, document):
+		"""Setup the SentimentDoc, by loading the default sentiment_dict
+		and extract_words-ing from the given document param"""
 		self.document = document
 		self.maxphrase = ('null', 0)
 		self.word_sentiments = {}
+		self.sentiment_value = 'null'
+
 		self.extract_words()
 		self.load_sentiments() # will update word_sentiments
-		pass
 
 	def load_sentiments(self, filename=sentiment_dict):
-		"""Read the sentiment file and return a dictionary containing the sentiment
-		score of each word, a value from -1 to +1.
+		"""Read the sentiment file and set self.word_sentiments to a 
+		dictionary containing the sentiment score of each word, a 
+		value from -1 to +1.
 		"""
 		for line in open(filename):
 			word, score = line.split(',')
@@ -35,13 +39,14 @@ class SentimentDoc:
 				self.document = self.document.replace(i, " ")
 		self.document = self.document.split()
 
-	def analyze_doc(self):
-		"""Outputs value of document and also documentation makes you feel smart lol
-		Phrases count as 1 "value" word, and we rollback counting of values/increments 
-		if we find a phrase
+	def analyze(self):
+		"""Calculates a sentiment value of document, a measure of it's average
+		emotion, from -1 to 1, with 1 being positive.
+
+		sentiment = sum(values) / num(values)
 
 		Phrase algorithm:
-		So. We keep a list of the most recent n words, where n is the length
+		We keep a list of the most recent n words, where n is the length
 		of the longest phrase we're looking for (should be 7). We go down this
 		list looking for phrases as follows:
 
@@ -53,21 +58,21 @@ class SentimentDoc:
 		of the words in the phrase, so we don't double count. Phrases count
 		for one counter increment.
 
-		>>> SentimentDoc("101").analyze_doc()
+		>>> SentimentDoc("101").analyze()
 		-0.25
-		>>> SentimentDoc("abandon").analyze_doc()
+		>>> SentimentDoc("abandon").analyze()
 		-0.375
-		>>> SentimentDoc("a priori").analyze_doc()
+		>>> SentimentDoc("a priori").analyze()
 		0.25
-		>>> SentimentDoc("william carlos williams").analyze_doc()
+		>>> SentimentDoc("william carlos williams").analyze()
 		0.375
-		>>> SentimentDoc("william carlos 101 williams").analyze_doc()
+		>>> SentimentDoc("william carlos 101 williams").analyze()
 		-0.25
-		>>> SentimentDoc("william carlos williams a priori").analyze_doc()
+		>>> SentimentDoc("william carlos williams a priori").analyze()
 		0.3125
-		>>> SentimentDoc("william carlos williams abandon a priori").analyze_doc()
+		>>> SentimentDoc("william carlos williams abandon a priori").analyze()
 		0.08333333333333333
-		>>> SentimentDoc("").analyze_doc()
+		>>> SentimentDoc("").analyze()
 		0
 		"""
 		total = 0
@@ -120,8 +125,7 @@ class SentimentDoc:
 				lastnwords.pop(0)
 			# print "TOTAL", total, "COUNT", count
 
-		average = 0
+		self.sentiment_value = 0
 		if count:
-			average = total/count
+			self.sentiment_value = total/count
 			# print average
-		return average

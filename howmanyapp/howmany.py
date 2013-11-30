@@ -48,6 +48,7 @@ class HowManyDoc:
 		self.longestword = longestword
 
 	def numword(self, s):
+		"""Counts the occurences of s in self.document"""
 		counter = 0
 		matches = re.finditer(r'%s[\w]*'%(s), self.document)
 		for i in matches:
@@ -77,10 +78,13 @@ def analyze_page(url):
 		'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36')]
 
 	r = br.open(url)
-	d = HowManyDoc( innertext_from_html(r.read()) )
+	pagetext = innertext_from_html(r.read())
+	d = HowManyDoc(pagetext)
+	s = SentimentDoc(pagetext)
 
 	d.rank_words()
 	d.numword('fuck')
+	s.analyze()
 
 	return d
 
