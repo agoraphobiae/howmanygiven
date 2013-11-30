@@ -2,11 +2,68 @@ import re
 import string
 import sys
 from string import ascii_letters, digits
+from collections import OrderedDict
 
-from howmany import HowManyDoc
+class HowManyDoc(object):
+	"""Base class for document analysis, which implements counting
+	of words and related functionality"""
+
+	def __init__(self, document):
+		self.document = document
+		self.wordrank = OrderedDict()
+		self.wordcount = {}
+		self.longestword = ('null', 0)
+
+	def rank_words(self, topnum=5, commonignore=True):
+		"""Gets the longest word and the topnum most used words"""
+		wordcount = {}
+		wordregex = r'\b[\w][\w]*\b'
+		matches = re.finditer(wordregex, self.document)
+
+		null = ('null', 0)
+		longestword = null
+		commonwords_ignore = ('the', 'and', 'of', 'a', 'to', 'on', 'is', 'that', 'be')
+
+		for word in matches:
+			word = word.group()
+			if word in wordcount:
+				wordcount[word] += 1
+			else:
+				wordcount[word] = 1
+
+			if len(word) > longestword[1]:
+				longestword = (word, len(word))
+
+		topn = [null for _ in xrange(topnum)]
+		for k,v in wordcount.items():
+			if commonignore and k not in commonwords_ignore:
+				for i in xrange(len(topn)):
+					if v > topn[i][1]:
+						topn.insert( i, (k,v) )
+						topn.pop()
+						break
+
+		# order by greatest occurence first
+		wordcount = OrderedDict(topn)
+		self.wordrank = wordcount
+		self.longestword = longestword
+
+	def numword(self, s):
+		"""Counts the occurences of s in self.document"""
+		counter = 0
+		matches = re.finditer(r'%s[\w]*'%(s), self.document)
+		for i in matches:
+			counter += 1
+		self.wordcount[s] = counter
+
+	def find_sentiment():
+		pass
+
+
+
 
 class SentimentDoc(HowManyDoc):
-	sentiment_dict = "data/sentiments.csv"
+	sentiment_dict = "howmanyapp/data/sentiments.csv"
 
 	def __init__(self, document):
 		"""Setup the SentimentDoc, by loading the default sentiment_dict
@@ -15,6 +72,7 @@ class SentimentDoc(HowManyDoc):
 		self.maxphrase = ('null', 0)
 		self.word_sentiments = {}
 		self.sentiment_value = 'null'
+		self.document_words = document
 
 		# need self.document
 		HowManyDoc.__init__(self, document)
@@ -40,10 +98,10 @@ class SentimentDoc(HowManyDoc):
 	def extract_words(self):
 		"""gets rid of non-letter stuff"""
 		# TODO: make faster, not O(n^2)
-		for i in self.document:
+		for i in self.document_words:
 			if i not in ascii_letters and i not in digits:
-				self.document = self.document.replace(i, " ")
-		self.document = self.document.split()
+				self.document_words = self.document.replace(i, " ")
+		self.document_words = self.document.split()
 
 	def analyze(self):
 		"""Calculates a sentiment value of document, a measure of it's average
@@ -85,7 +143,7 @@ class SentimentDoc(HowManyDoc):
 		count = 0
 		lastnwords = []
 
-		for word in self.document:
+		for word in self.document_words:
 			# print "WORD", word
 			value = self.word_sentiments.get(word, 0)
 			if value:

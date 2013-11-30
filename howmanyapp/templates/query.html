@@ -4,6 +4,7 @@
   <section id="main-content">
     <div id="guts">
     {{ queryname }} analysis: <br>
+    Sentiment value: {{ data.sentiment_value }} <br>
     <table class="center">
     {% for k,v in data.wordrank.items() %}
       <tr>

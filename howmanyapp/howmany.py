@@ -2,66 +2,8 @@
 
 import mechanize
 from bs4 import BeautifulSoup
-import re
 
-from collections import OrderedDict
-
-class HowManyDoc(object):
-	"""Base class for document analysis, which implements counting
-	of words and related functionality"""
-
-	def __init__(self, document):
-		self.document = document
-		self.wordrank = OrderedDict()
-		self.wordcount = {}
-		self.longestword = ('null', 0)
-
-	def rank_words(self, topnum=5, commonignore=True):
-		"""Gets the longest word and the topnum most used words"""
-		wordcount = {}
-		wordregex = r'\b[\w][\w]*\b'
-		matches = re.finditer(wordregex, self.document)
-
-		null = ('null', 0)
-		longestword = null
-		commonwords_ignore = ('the', 'and', 'of', 'a', 'to', 'on', 'is', 'that', 'be')
-
-		for word in matches:
-			word = word.group()
-			if word in wordcount:
-				wordcount[word] += 1
-			else:
-				wordcount[word] = 1
-
-			if len(word) > longestword[1]:
-				longestword = (word, len(word))
-
-		topn = [null for _ in xrange(topnum)]
-		for k,v in wordcount.items():
-			if commonignore and k not in commonwords_ignore:
-				for i in xrange(len(topn)):
-					if v > topn[i][1]:
-						topn.insert( i, (k,v) )
-						topn.pop()
-						break
-
-		# order by greatest occurence first
-		wordcount = OrderedDict(topn)
-		self.wordrank = wordcount
-		self.longestword = longestword
-
-	def numword(self, s):
-		"""Counts the occurences of s in self.document"""
-		counter = 0
-		matches = re.finditer(r'%s[\w]*'%(s), self.document)
-		for i in matches:
-			counter += 1
-		self.wordcount[s] = counter
-
-	def find_sentiment():
-		pass
-
-
+from data import HowManyDoc, SentimentDoc
 
 def count_in_page(url, s):
 	print "URL: ", url
