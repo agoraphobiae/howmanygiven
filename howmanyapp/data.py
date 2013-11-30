@@ -10,6 +10,7 @@ class SentimentDoc:
 		self.document = document
 		self.maxphrase = ('null', 0)
 		self.word_sentiments = {}
+		self.extract_words()
 		self.load_sentiments() # will update word_sentiments
 		pass
 
@@ -24,7 +25,7 @@ class SentimentDoc:
 				self.maxphrase = (word, curlen)
 
 			self.word_sentiments[word] = float(score.strip())
-		print self.maxphrase
+		#print self.maxphrase
 
 	def extract_words(self):
 		"""gets rid of non-letter stuff"""
@@ -74,6 +75,7 @@ class SentimentDoc:
 		lastnwords = []
 
 		for word in self.document:
+			# print "WORD", word
 			value = self.word_sentiments.get(word, 0)
 			if value:
 				total += value
@@ -89,9 +91,9 @@ class SentimentDoc:
 			# phrase loop
 			while lastnphrase != word:
 				phrasevalue = self.word_sentiments.get(lastnphrase, 0)
-				# print lastnphrase
+				# print "LASTNPHRASE", lastnphrase
 				if phrasevalue and len(lastnphrase.split()) > 1:
-					# print "LOL", lastnphrase
+					# print "LASTNPHRASE inside check", lastnphrase
 					for phraseword,v in lastnwordschecker:
 						# rollback our values
 						# print phraseword, v
@@ -102,7 +104,7 @@ class SentimentDoc:
 					total += phrasevalue
 					# print "PHRASEVAL", phrasevalue
 					count += 1
-					# print total
+					# print "TOTAL", total
 					lastnwordschecker = []
 					break
 
