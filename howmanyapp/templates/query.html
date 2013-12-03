@@ -3,8 +3,9 @@
 <div id="container">
   <section id="main-content">
     <div id="guts">
-    {{ queryname }} analysis: <br>
+    Analysis: <br>
     Sentiment value: {{ data.sentiment_value }} <br>
+    Most commonly used words and number of occurrences: <br>
     <table class="center">
     {% for k,v in data.wordrank.items() %}
       <tr>
@@ -13,11 +14,21 @@
     {% endfor %}
     </table><br>
     The longest word was: {{ data.longestword[0] }} at {{ data.longestword[1] }} characters long.<br>
+    <br>
     <table class="center">
     {% for k,v in data.wordcount.items() %}
+      {% if k == 'fuck' %}
+        {{ queryname }} gives
+        {% if v %} exactly 
+          <br><b><h1>{{ v }}</h1></b> fucks.
+        {% else %}
+          <br><b><h1>no</h1></b> fucks.
+        {% endif %}
+      {% else %}
       <tr>
         <td>{{ k }}</td><td>{{ v }}</td>
       </tr>
+      {% endif %}
     {% endfor %}
     </table>
     </div>
