@@ -25,7 +25,7 @@ class HowManyDoc(object):
 		"""Gets the longest word and the topnum most used words"""
 		wordcount = {}
 		# |' catches There's as a word instead of (There, s)
-		wordregex = r"\b[\w]([\w]|')*\b"
+		wordregex = r"\b[\w]([\w]|'|\.)*\b"
 		matches = re.finditer(wordregex, self.document)
 
 		null = ('null', 0)
