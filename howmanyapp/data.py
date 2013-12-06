@@ -4,12 +4,19 @@ import sys
 from string import ascii_letters, digits
 from collections import OrderedDict
 
+from unidecode import unidecode
+
 class HowManyDoc(object):
 	"""Base class for document analysis, which implements counting
 	of words and related functionality"""
 
 	def __init__(self, document):
-		self.document = document
+		"""Decodes document from a unicode string to ascii using
+		unidecode, if passed as a unicode string."""
+		if isinstance(document, unicode):
+			self.document = unidecode(document)
+		else:
+			self.document = document
 		self.wordrank = OrderedDict()
 		self.wordcount = {}
 		self.longestword = ('null', 0)
