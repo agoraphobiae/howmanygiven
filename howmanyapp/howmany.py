@@ -2,6 +2,7 @@
 
 import mechanize
 from bs4 import BeautifulSoup
+from bs4.element import Comment
 
 from data import HowManyDoc, SentimentDoc
 
@@ -35,7 +36,10 @@ def analyze_page(url):
 
 def innertext_from_html(html):
 	soup = BeautifulSoup(html, from_encoding="utf-8")
-	return u' '.join(soup.findAll(text=True))
+	[unwantedtag.extract() for unwantedtag in soup(['script', 'style'])]
+	alltxt = [txt for txt in soup.find_all(text=True) if not isinstance(txt, Comment)]
+	# print u' '.join(alltxt)
+	return u' '.join(alltxt)
 
 
 def cleanQueryName(path):

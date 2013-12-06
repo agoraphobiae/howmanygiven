@@ -17,12 +17,14 @@ class HowManyDoc(object):
 	def rank_words(self, topnum=5, commonignore=True):
 		"""Gets the longest word and the topnum most used words"""
 		wordcount = {}
-		wordregex = r'\b[\w][\w]*\b'
+		# |' catches There's as a word instead of (There, s)
+		wordregex = r"\b[\w]([\w]|')*\b"
 		matches = re.finditer(wordregex, self.document)
 
 		null = ('null', 0)
 		longestword = null
-		commonwords_ignore = ('the', 'and', 'of', 'a', 'to', 'on', 'is', 'that', 'be')
+		commonwords_ignore = ('the', 'and', 'of', 'a', 'to', 'on', 'is', 'that', 'be',
+			'in', 'for', 'as')
 
 		for word in matches:
 			word = word.group()
@@ -36,7 +38,7 @@ class HowManyDoc(object):
 
 		topn = [null for _ in xrange(topnum)]
 		for k,v in wordcount.items():
-			if commonignore and k not in commonwords_ignore:
+			if commonignore and k.lower() not in commonwords_ignore:
 				for i in xrange(len(topn)):
 					if v > topn[i][1]:
 						topn.insert( i, (k,v) )
