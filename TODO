@@ -1,4 +1,10 @@
-[ ] load sentiments file
-[ ] calc sentiments from given string
-[k] plaintext website
-[ ] frontend handle output/color
+[x] load sentiments file
+[x] calc sentiments from given string
+[x] plaintext website
+[x] frontend handle output
+[ ] write sampling framework for getting average values from variety of sources
+[ ] meaningfully interpret and display data with color
+[ ] meaningfully interpret and display data with d3js
+[ ] beautify frontend
+[ ] test parallel requests
+[ ] optimize search algorithm (sets v dicts)
