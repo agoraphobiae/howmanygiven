@@ -4,7 +4,8 @@
 [x] frontend handle output
 [ ] write sampling framework for getting average values from variety of sources
 [ ] meaningfully interpret and display data with color
-[ ] meaningfully interpret and display data with d3js
+[ ] add history with sqlacademy/postgresql
+[ ] add history graphs with d3js
 [ ] beautify frontend
 [ ] test parallel requests
 [ ] optimize search algorithm (sets v dicts)
