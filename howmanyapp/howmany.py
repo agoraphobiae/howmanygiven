@@ -28,7 +28,7 @@ def analyze_page(url):
 	d = SentimentDoc(pagetext)
 
 	d.rank_words()
-	d.numword('fuck')
+	# d.numword('fuck')
 	d.analyze()
 
 	return d
