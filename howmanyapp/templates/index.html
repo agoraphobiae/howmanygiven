@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 {% block head %}
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'></script>
+<script type='text/javascript' src="{{ url_for('static', filename='dynamicpage.js') }}"></script>
+<script type='text/javascript' src="{{ url_for('static', filename='modernizr.js') }}"></script>
+
 <script>
+var suggestions = ['reddit.com', 'nyt.com',
+                  'slashdot.org']
+$( document ).ready(function() {
+      $('#urlinput').attr('value', suggestions[Math.floor(Math.random()*suggestions.length)]);
+
+      $('#wiki').click( function() {
+        $('#urlinput').attr('value', 'http://tools.wikimedia.de/~dapete/random/enwiki-featured.php');
+        submitForm();
+      });
+});
+
 function clearInput(inputbox) {
       if (inputbox.cleared) { return; }
       inputbox.value = '';
@@ -8,15 +23,11 @@ function clearInput(inputbox) {
       inputbox.style.color = '#333';
 }
 function submitForm() {
-      url = document.getElementById('urlinput').value;
-      window.location = '/' + url;
-      return false;
+      // window.location = '/' + $('#urlinput').attr('value');
+      // return false;
+      $('#urlform').submit();
     }
 </script>
-
-<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'></script>
-<script type='text/javascript' src="{{ url_for('static', filename='dynamicpage.js') }}"></script>
-<script type='text/javascript' src="{{ url_for('static', filename='modernizr.js') }}"></script>
 {% endblock %}
 
 
@@ -28,6 +39,7 @@ function submitForm() {
      for me.
     <input type="submit" style="display: none;">
   </form>
+  <p class="small">or try <a id="wiki" href="#">a random featured wikipedia article</a>.<p>
 
   <section id="main-content">
     <div id="guts">

@@ -20,7 +20,7 @@ div {
 }
 
 form {
-	margin-bottom: 2em;
+	margin-bottom: 0em;
 }
 
 input {
@@ -28,6 +28,10 @@ input {
 	font-size: 1em;
 	color: #DDD;
 	border: 1px solid #DDD;
+}
+
+.small {
+	font-size: 0.25em;
 }
 
 .center {
